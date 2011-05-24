@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>bekkopen.roots</groupId>
 	<artifactId>parent</artifactId>
@@ -36,11 +37,11 @@
 			<id>roots.releases</id>
 			<url>http://mgmt.muda.no:8081/nexus/content/repositories/releases</url>
 		</repository>
-                <snapshotRepository>
-                        <id>roots.snapshots</id>
-                        <url>http://mgmt.muda.no:8081/nexus/content/repositories/snapshots</url>
-                        <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
+		<snapshotRepository>
+			<id>roots.snapshots</id>
+			<url>http://mgmt.muda.no:8081/nexus/content/repositories/snapshots</url>
+			<uniqueVersion>true</uniqueVersion>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>

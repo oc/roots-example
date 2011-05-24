@@ -11,7 +11,7 @@
 # description: Starts and stops <application>
 #
 
-APP_NAME=roots
+APP_NAME=jetty-pkg
 JAVA_HOME=/usr/java/jdk1.6.0_25
 HOME_DIR=/srv/roots
 USER=roots
@@ -21,7 +21,7 @@ USER=roots
 #
 APP_HOME=${HOME_DIR}/${APP_NAME}
 APPDIR=${APP_HOME}/bin
-STARTSCRIPT=${APPDIR}/${APP_NAME}-webapp
+STARTSCRIPT=${APPDIR}/${APP_NAME}
 LOGFILE=${APPDIR}/../logs/${APP_NAME}.log
 LC_ALL=no_NO.utf8
 

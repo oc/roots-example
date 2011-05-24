@@ -8,7 +8,7 @@
 #
 
 JAVA_HOME=/usr/java/jdk1.6.0_25
-APP_HOME=/srv/roots/roots
+APP_HOME=/srv/roots/jetty-pkg
 
 hostname=`hostname`
 PID=`ps -ea -o "pid ppid args" | grep -v grep | grep "${JAVA_HOME}/bin/java" \
