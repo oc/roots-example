@@ -52,12 +52,10 @@ do
         do
     upload_file $server_host $script
         done
-  fi
-  if [ "$1" != "--noconfig" ]; then
-	  for conf in ${config_files[@]}
-	  do
-      upload_file $server_host "$config_dir/$server/$conf"
-	  done
+	for conf in ${config_files[@]}
+	do
+    upload_file $server_host "$config_dir/$server/$conf"
+	done
   fi
 done
 
