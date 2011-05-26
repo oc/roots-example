@@ -1,12 +1,12 @@
 package bekkopen.jetty;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TimeZone;
+
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -21,12 +21,13 @@ import bekkopen.jetty.config.SystemPropertiesLoader;
 
 public class WebServerMain {
 
+	private static final String UNABLE_TO_START = "Unable to start";
+	private static final String UNABLE_TO_STOP = "Unable to stop";
+
 	private static final String SESSION_PATH = "/";
 
 	// Graceful shutdown timeout
 	private static final int GRACEFUL_SHUTDOWN = 1000;
-	// org.eclipse.jetty.server.Request.maxFormContentSize
-	private static final String MAX_FORM_CONTENT_SIZE = "300000";
 	// Jetty server
 	private static Server jettyServer;
 	private static int port;
@@ -36,20 +37,20 @@ public class WebServerMain {
 	}
 
 	private static void start() {
-		konfigurerLogging();
+		configureLogging();
 		if (jettyServer != null && jettyServer.isRunning()) {
-			System.out.println("JettyServer.start() ble kalt, men serveren er allerede startet.");
+			System.out.println("Called JettyServer.start(), but the server is allready started.");
 			return;
 		}
 		configure();
 		try {
 			jettyServer.start();
 		} catch (final Exception e) {
-			throw new RuntimeException("Kan ikke starte", e);
+			throw new RuntimeException(UNABLE_TO_START, e);
 		}
 		port = jettyServer.getConnectors()[0].getLocalPort();
 		System.out.println(
-				"JettyServer startet paa http://" + System.getProperty("hostname", "localhost") + ":" + port
+				"JettyServer started on http://" + System.getProperty("hostname", "localhost") + ":" + port
 						+ SESSION_PATH);
 	}
 
@@ -58,11 +59,11 @@ public class WebServerMain {
 			try {
 				jettyServer.stop();
 				System.out.println(
-						"JettyServer stoppet paa http://" + System.getProperty("hostname", "localhost") + ":" + port
+						"JettyServer stopped on http://" + System.getProperty("hostname", "localhost") + ":" + port
 								+ SESSION_PATH);
 			} catch (final Exception e) {
-				System.err.println("Klarte ikke stoppe Jetty server.");
-				throw new RuntimeException("Klarte ikke stoppe", e);
+				System.err.println(UNABLE_TO_STOP);
+				throw new RuntimeException(UNABLE_TO_STOP, e);
 			}
 		}
 	}
@@ -70,11 +71,9 @@ public class WebServerMain {
 	private static void configure() {
 		try {
 			SystemPropertiesLoader.loadConfig();
-		} catch (final IOException e) {
-			throw new RuntimeException("Kan ikke starte", e);
+		} catch (final Exception e) {
+			throw new RuntimeException(UNABLE_TO_START, e);
 		}
-
-		System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize", MAX_FORM_CONTENT_SIZE);
 
 		jettyServer = new Server();
 
@@ -86,7 +85,7 @@ public class WebServerMain {
 		if (jettyPort != null) {
 			jettyServer.setConnectors(new Connector[] { new RootsSelectChannelConnector(Integer.parseInt(jettyPort)) });
 		} else {
-			throw new RuntimeException("Kan ikke starte: Systemvariabelen 'jetty.port' er ikke satt.");
+			throw new RuntimeException(UNABLE_TO_START + ": System property 'jetty.port' is missing.");
 		}
 
 		List<Handler> handlerList = new ArrayList<Handler>();
@@ -102,7 +101,7 @@ public class WebServerMain {
 		jettyServer.setStopAtShutdown(true);
 	}
 
-	private static void konfigurerLogging() {
+	private static void configureLogging() {
 		try {
 			File logDir = new File(System.getProperty("jetty.home", "../logs"));
 			logDir.mkdir();
@@ -113,7 +112,7 @@ public class WebServerMain {
 			System.setOut(serverLog);
 			System.setErr(serverLog);
 		} catch (final Exception e) {
-			throw new RuntimeException("Kan ikke starte: Kunne ikke konfigurere logging: " + e);
+			throw new RuntimeException(UNABLE_TO_STOP + ": Unable to configure logging: " + e);
 		}
 
 	}
@@ -126,14 +125,14 @@ public class WebServerMain {
 					return warFile.getAbsolutePath();
 				}
 			} else {
-				final StringBuilder melding = new StringBuilder("Forventet 1 webapplikasjon (.war) i: ");
-				melding.append(repoDir.getAbsolutePath());
-				melding.append(". Fant " + files.size());
-				throw new RuntimeException("Kan ikke starte: " + melding.toString());
+				final StringBuilder msg = new StringBuilder("Expected 1 webapp (.war) in: ");
+				msg.append(repoDir.getAbsolutePath());
+				msg.append(". Found " + files.size());
+				throw new RuntimeException(UNABLE_TO_START + msg.toString());
 			}
 		}
-		System.err.println("Kan ikke lese: " + repoDir.getAbsolutePath() + ". Kan ikke starte.");
-		throw new RuntimeException("Kan ikke lese: " + repoDir.getAbsolutePath() + ". Kan ikke starte.");
+		System.err.println(UNABLE_TO_START + ": Can't read: " + repoDir.getAbsolutePath());
+		throw new RuntimeException(UNABLE_TO_START + ": Can't read: " + repoDir.getAbsolutePath());
 	}
 
 	private WebServerMain() {

@@ -18,7 +18,7 @@ while true; do
 done
 
 server_suffix=".muda.no"
-servers=( "node1" "node2" )
+servers=( "node1" "node2" "node3")
 artifacts=("../jetty-pkg/target/jetty-pkg-$version.zip")
 config_dir="../config"
 config_files=("deploy.config" "webapp.properties")

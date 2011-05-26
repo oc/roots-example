@@ -14,7 +14,6 @@
 			<directory>src/main/jetty-resources</directory>
 			<includes>
 				<include>work</include>
-				<include>logs</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 			<directoryMode>0755</directoryMode>

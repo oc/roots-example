@@ -7,10 +7,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.Set;
 
 public final class SystemPropertiesLoader {
-	private static final Set<String> APP_SERVERS = CollectionBuilder.newSet("node1", "node2");
 
 	private static final String CONFIG = "config";
 
@@ -24,11 +22,12 @@ public final class SystemPropertiesLoader {
 
 	}
 
-	private static void loadProperties(final String configKey) throws IOException {
+	private static void loadProperties(final String configKey)
+			throws IOException {
 		final String configValue = System.getProperty(configKey);
 		if (configValue == null) {
-			throw new RuntimeException("System property \""
-					+ configKey + "\" er ikke satt");
+			throw new RuntimeException("System property \"" + configKey
+					+ "\" not set");
 		}
 		File configFile = new File(configValue);
 		Properties properties = new Properties();
@@ -41,21 +40,22 @@ public final class SystemPropertiesLoader {
 			}
 
 			String hostName = localHostResolver.getLocalHost();
-			if (APP_SERVERS.contains(hostName)) {
-				String propertyHostName = properties.getProperty("hostname");
-				if (!hostName.equals(propertyHostName)) {
-					String message = "System property hostname stemmer ikke overens med det virkelige hostnamet. "
-							+ "Properties-fila angir " + propertyHostName + ", mens det virkelige er " + hostName + ".";
-					throw new RuntimeException(message);
-				}
+			String propertyHostName = properties.getProperty("hostname");
+			if (!hostName.equals(propertyHostName)) {
+				String message = "System property hostname is not correct. "
+						+ "Property file says " + propertyHostName
+						+ ", but the real name is " + hostName + ".";
+				throw new RuntimeException(message);
 			}
 
 			setProperties(properties);
 			if (CONFIG.equals(configKey)) {
-				System.out.println("System properties fra " + configFile.getAbsolutePath() +": "+ properties.toString());
+				System.out.println("System properties from "
+						+ configFile.getAbsolutePath() + ": "
+						+ properties.toString());
 			}
 		} else {
-			throw new RuntimeException("Fant ikke "
+			throw new RuntimeException("Couldn't find "
 					+ configFile.getAbsolutePath());
 		}
 	}
