@@ -13,12 +13,11 @@
 	<groupId>bekkopen.roots</groupId>
 	<artifactId>jetty-pkg</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
-	<name>Roots: Jetty Standalone Jar</name>
+	<name>Roots: Jetty Embedded</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<bundle.name>roots-${project.version}</bundle.name>
 		<glassfish-jsp-2.1.version>2.1.v20100127</glassfish-jsp-2.1.version>
 	</properties>
 
@@ -91,40 +90,6 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<finalName>${bundle.name}</finalName>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>bekkopen.jetty.Main</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>zip-assembly</id>
-			<activation>
-				<property>
-					<name>zip-assembly</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
 						<artifactId>appassembler-maven-plugin</artifactId>
 						<groupId>org.codehaus.mojo</groupId>
 						<executions>
@@ -142,6 +107,7 @@
 									<name>jetty-pkg</name>
 									<platforms>
 										<platform>unix</platform>
+										<platform>windows</platform>
 									</platforms>
 								</program>
 							</programs>

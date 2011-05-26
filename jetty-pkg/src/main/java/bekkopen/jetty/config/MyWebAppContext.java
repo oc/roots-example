@@ -4,9 +4,9 @@ import org.eclipse.jetty.server.session.HashSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-public class RootsWebAppContext extends WebAppContext {
+public class MyWebAppContext extends WebAppContext {
 
-	public RootsWebAppContext(final String webApp, final String contextPath) {
+	public MyWebAppContext(final String webApp, final String contextPath) {
 		super(webApp, contextPath);
 		final SessionHandler sessionHandler = getSessionHandler();
 		final HashSessionManager sessionManager = (HashSessionManager) sessionHandler.getSessionManager();

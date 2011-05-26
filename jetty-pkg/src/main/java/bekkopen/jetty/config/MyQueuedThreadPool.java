@@ -2,9 +2,9 @@ package bekkopen.jetty.config;
 
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-public class RootsQueuedThreadPool extends QueuedThreadPool {
+public class MyQueuedThreadPool extends QueuedThreadPool {
 
-	public RootsQueuedThreadPool() {
+	public MyQueuedThreadPool() {
 		super();
 	}
 }

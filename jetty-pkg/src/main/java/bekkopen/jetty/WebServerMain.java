@@ -14,9 +14,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.util.RolloverFileOutputStream;
 
-import bekkopen.jetty.config.RootsQueuedThreadPool;
-import bekkopen.jetty.config.RootsSelectChannelConnector;
-import bekkopen.jetty.config.RootsWebAppContext;
+import bekkopen.jetty.config.MyQueuedThreadPool;
+import bekkopen.jetty.config.MySelectChannelConnector;
+import bekkopen.jetty.config.MyWebAppContext;
 import bekkopen.jetty.config.SystemPropertiesLoader;
 
 public class WebServerMain {
@@ -79,18 +79,18 @@ public class WebServerMain {
 
 		jettyServer.setSendServerVersion(false);
 
-		jettyServer.setThreadPool(new RootsQueuedThreadPool());
+		jettyServer.setThreadPool(new MyQueuedThreadPool());
 
 		final String jettyPort = System.getProperty("jetty.port");
 		if (jettyPort != null) {
-			jettyServer.setConnectors(new Connector[] { new RootsSelectChannelConnector(Integer.parseInt(jettyPort)) });
+			jettyServer.setConnectors(new Connector[] { new MySelectChannelConnector(Integer.parseInt(jettyPort)) });
 		} else {
 			throw new RuntimeException(UNABLE_TO_START + ": System property 'jetty.port' is missing.");
 		}
 
 		List<Handler> handlerList = new ArrayList<Handler>();
 
-		handlerList.add(new RootsWebAppContext(findPathToWarFile(new File(System.getProperty("basedir",
+		handlerList.add(new MyWebAppContext(findPathToWarFile(new File(System.getProperty("basedir",
 				"target/appassembler/repo"))), SESSION_PATH));
 
 		final HandlerCollection handlers = new HandlerCollection();
